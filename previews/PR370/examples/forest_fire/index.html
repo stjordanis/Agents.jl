@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Forest fire · Agents.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Code+Pro&amp;display=swap" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img src="../../assets/logo.png" alt="Agents.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit">Agents.jl</span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Introduction</a></li><li><a class="tocitem" href="../../tutorial/">Tutorial</a></li><li><input class="collapse-toggle" id="menuitem-3" type="checkbox" checked/><label class="tocitem" for="menuitem-3"><span class="docs-label">Examples</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../">Overview</a></li><li><a class="tocitem" href="../schelling/">Schelling&#39;s segregation model</a></li><li><a class="tocitem" href="../sugarscape/">Sugarscape</a></li><li><a class="tocitem" href="../sir/">SIR model for the spread of COVID-19</a></li><li><a class="tocitem" href="../social_distancing/">Continuous space social distancing for COVID-19</a></li><li><a class="tocitem" href="../wealth_distribution/">Wealth distribution</a></li><li class="is-active"><a class="tocitem" href>Forest fire</a><ul class="internal"><li><a class="tocitem" href="#Defining-the-core-structures"><span>Defining the core structures</span></a></li><li><a class="tocitem" href="#Defining-the-step!"><span>Defining the step!</span></a></li><li><a class="tocitem" href="#Running-the-model"><span>Running the model</span></a></li></ul></li><li><a class="tocitem" href="../game_of_life_2D_CA/">Conway&#39;s game of life</a></li><li><a class="tocitem" href="../wright-fisher/">Wright-Fisher model of evolution</a></li><li><a class="tocitem" href="../hk/">Hegselmann-Krause opinion dynamics</a></li><li><a class="tocitem" href="../flock/">Flocking</a></li><li><a class="tocitem" href="../daisyworld/">Daisyworld</a></li><li><a class="tocitem" href="../predator_prey/">Predator-Prey</a></li><li><a class="tocitem" href="../growing_bacteria/">Bacteria Growth</a></li><li><a class="tocitem" href="../opinion_spread/">Opinion spread</a></li><li><a class="tocitem" href="../battle/">Battle Royale</a></li><li><a class="tocitem" href="../zombies/">Zombie Outbreak</a></li></ul></li><li><a class="tocitem" href="../../models/">Predefined Models</a></li><li><a class="tocitem" href="../../api/">API</a></li><li><a class="tocitem" href="../../interact/">Interactive application</a></li><li><input class="collapse-toggle" id="menuitem-7" type="checkbox"/><label class="tocitem" for="menuitem-7"><span class="docs-label">Ecosystem Integration</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../optim/">BlackBoxOptim.jl</a></li><li><a class="tocitem" href="../diffeq/">DifferentialEquations.jl</a></li><li><a class="tocitem" href="../schoolyard/">LightGraphs.jl</a></li><li><a class="tocitem" href="../measurements/">Measurements.jl</a></li></ul></li><li><a class="tocitem" href="../../comparison/">ABM Framework Comparison</a></li><li><a class="tocitem" href="../../devdocs/">Developer Docs</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Forest fire</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Forest fire</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/JuliaDynamics/Agents.jl/blob/master/examples/forest_fire.jl" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Forest-fire-model"><a class="docs-heading-anchor" href="#Forest-fire-model">Forest fire model</a><a id="Forest-fire-model-1"></a><a class="docs-heading-anchor-permalink" href="#Forest-fire-model" title="Permalink"></a></h1><video width="auto" controls autoplay loop>
+<source src="../forest.mp4" type="video/mp4">
+</video><p>The forest fire model is defined as a cellular automaton on a grid. A position can be empty or occupied by a tree which is ok, burning or burnt. We implement a slightly different ruleset to that of <a href="https://en.wikipedia.org/wiki/Forest-fire_model">Drossel and Schwabl (1992)</a>, so that our implementation can be compared with other ABM frameworks</p><ol><li>A burning position turns into a burnt position</li><li>A tree will burn if at least one neighbor is burning</li></ol><p>The forest has an innate <code>density</code>, which is the proportion of trees initialized as <code>green</code>, however all trees that reside at <code>x=1</code> on the grid are <code>burning</code>. The model is also available from the <code>Models</code> module as <a href="../../models/#Agents.Models.forest_fire-Tuple{}"><code>Models.forest_fire</code></a>.</p><h2 id="Defining-the-core-structures"><a class="docs-heading-anchor" href="#Defining-the-core-structures">Defining the core structures</a><a id="Defining-the-core-structures-1"></a><a class="docs-heading-anchor-permalink" href="#Defining-the-core-structures" title="Permalink"></a></h2><p>We start by defining the agent type</p><pre><code class="language-julia">using Agents, Random
+using InteractiveChaos
+import CairoMakie
+
+mutable struct Tree &lt;: AbstractAgent
+    id::Int
+    pos::Dims{2}
+    status::Symbol  #:green, :burning, :burnt
+end</code></pre><p>The agent type <code>Tree</code> has three fields: <code>id</code> and <code>pos</code>, which have to be there for any agent, and a <code>status</code> field that we introduce for this specific model. The <code>status</code> field will be <code>:green</code> when the tree is ok, <code>:burning</code> when on fire, and finally <code>:burnt</code>.</p><p>We then make a setup function that initializes the model.</p><pre><code class="language-julia">function forest_fire(; density = 0.7, griddims = (100, 100))
+    space = GridSpace(griddims; periodic = false, metric = :euclidean)
+    forest = AgentBasedModel(Tree, space)
+    # create and add trees to each position with a probability
+    # determined by the `density`.
+    for position in positions(forest)
+        if rand() &lt; density
+            # Set the trees at position x=1 on fire
+            state = position[1] == 1 ? :burning : :green
+            add_agent!(position, forest, state)
+        end
+    end
+    return forest
+end
+
+forest = forest_fire()</code></pre><pre class="documenter-example-output">AgentBasedModel with 7045 agents of type Tree
+ space: GridSpace with size (100, 100), metric=euclidean and periodic=false
+ scheduler: fastest</pre><h2 id="Defining-the-step!"><a class="docs-heading-anchor" href="#Defining-the-step!">Defining the step!</a><a id="Defining-the-step!-1"></a><a class="docs-heading-anchor-permalink" href="#Defining-the-step!" title="Permalink"></a></h2><p>Because of the way the forest fire model is defined, we only need a stepping function for the agents</p><pre><code class="language-julia">function tree_step!(tree, forest)
+    # The current tree is burning
+    if tree.status == :burning
+        # Find all green neighbors and set them on fire
+        for neighbor in nearby_agents(tree, forest)
+            if neighbor.status == :green
+                neighbor.status = :burning
+            end
+        end
+        tree.status = :burnt
+    end
+end</code></pre><h2 id="Running-the-model"><a class="docs-heading-anchor" href="#Running-the-model">Running the model</a><a id="Running-the-model-1"></a><a class="docs-heading-anchor-permalink" href="#Running-the-model" title="Permalink"></a></h2><pre><code class="language-julia">step!(forest, tree_step!, 1)
+count(t -&gt; t.status == :burnt, allagents(forest))</code></pre><pre class="documenter-example-output">125</pre><pre><code class="language-julia">step!(forest, tree_step!, 10)
+count(t -&gt; t.status == :burnt, allagents(forest))</code></pre><pre class="documenter-example-output">1328</pre><p>Now we can do some data collection as well using an aggregate function <code>percentage</code>:</p><pre><code class="language-julia">Random.seed!(2)
+forest = forest_fire(griddims = (20, 20))
+burnt_percentage(m) = count(t -&gt; t.status == :burnt, allagents(m)) / length(positions(m))
+mdata = [burnt_percentage]
+
+_, data = run!(forest, tree_step!, 10; mdata)
+data</code></pre><table class="data-frame"><thead><tr><th></th><th>step</th><th>burnt_percentage</th></tr><tr><th></th><th>Int64</th><th>Float64</th></tr></thead><tbody><p>11 rows × 2 columns</p><tr><th>1</th><td>0</td><td>0.0</td></tr><tr><th>2</th><td>1</td><td>0.065</td></tr><tr><th>3</th><td>2</td><td>0.14</td></tr><tr><th>4</th><td>3</td><td>0.23</td></tr><tr><th>5</th><td>4</td><td>0.295</td></tr><tr><th>6</th><td>5</td><td>0.35</td></tr><tr><th>7</th><td>6</td><td>0.4</td></tr><tr><th>8</th><td>7</td><td>0.4475</td></tr><tr><th>9</th><td>8</td><td>0.4975</td></tr><tr><th>10</th><td>9</td><td>0.56</td></tr><tr><th>11</th><td>10</td><td>0.635</td></tr></tbody></table><p>Now let&#39;s plot the model. We use green for unburnt trees, red for burning and a dark red for burnt.</p><pre><code class="language-julia">forest = forest_fire()
+step!(forest, tree_step!, 1)
+
+function treecolor(a)
+    color = :green
+    if a.status == :burning
+        color = :red
+    elseif a.status == :burnt
+        color = :darkred
+    end
+    color
+end
+
+figure = abm_plot(forest; ac = treecolor, as = 8)</code></pre><pre class="documenter-example-output">(Scene (600px, 600px):
+  14 Plots:
+    ├ Combined{AbstractPlotting.poly,Tuple{Array{Array{Point{2,Float32},1},1}}}
+    ├ Combined{AbstractPlotting.linesegments,Tuple{Array{Point{2,Float32},1}}}
+    ├ Combined{AbstractPlotting.linesegments,Tuple{Array{Point{2,Float32},1}}}
+    ├ Combined{AbstractPlotting.linesegments,Tuple{Array{Point{2,Float32},1}}}
+    ├ Combined{AbstractPlotting.annotations,Tuple{Array{Tuple{String,Point{2,Float32}},1}}}
+    ├ Combined{AbstractPlotting.text,Tuple{String}}
+    ├ Combined{AbstractPlotting.lines,Tuple{Array{Point{2,Float32},1}}}
+    ├ Combined{AbstractPlotting.linesegments,Tuple{Array{Point{2,Float32},1}}}
+    ├ Combined{AbstractPlotting.annotations,Tuple{Array{Tuple{String,Point{2,Float32}},1}}}
+    ├ Combined{AbstractPlotting.text,Tuple{String}}
+    ├ Combined{AbstractPlotting.lines,Tuple{Array{Point{2,Float32},1}}}
+    ├ Combined{AbstractPlotting.lines,Tuple{Array{Point{2,Float32},1}}}
+    ├ Combined{AbstractPlotting.lines,Tuple{Array{Point{2,Float32},1}}}
+    └ Combined{AbstractPlotting.text,Tuple{String}}
+  1 Child Scene:
+    └ Scene (490px, 490px), Helper structure for stepping and updating the plot of an agent based model. It is outputted by `abm_plot` and can be used in `Agents.step!`.
+)</pre><p>or animate it</p><pre><code class="language-julia">Random.seed!(10)
+forest = forest_fire(density = 0.6)
+abm_video(
+    &quot;forest.mp4&quot;,
+    forest,
+    tree_step!;
+    ac = treecolor,
+    as = 8,
+    framerate = 2,
+    frames = 10,
+    spf = 5,
+    title = &quot;Forest Fire&quot;,
+)</code></pre><video width="auto" controls autoplay loop>
+<source src="../forest.mp4" type="video/mp4">
+</video></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../wealth_distribution/">« Wealth distribution</a><a class="docs-footer-nextpage" href="../game_of_life_2D_CA/">Conway&#39;s game of life »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 25 January 2021 08:27">Monday 25 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
